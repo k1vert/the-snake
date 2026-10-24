@@ -1,4 +1,6 @@
-from random import choice, randint
+"""Логика игры «Изгиб Питона»."""
+
+from random import randint
 
 import pygame
 
@@ -42,8 +44,10 @@ clock = pygame.time.Clock()
 class GameObject:
     """Базовый класс игрового объекта."""
 
-    def __init__(self, position=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2),
-                 body_color=None):
+    def __init__(
+        self, position=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2),
+        body_color=None,
+    ):
         """Создать объект с заданными координатами и цветом."""
         self.position = position
         self.body_color = body_color
@@ -102,8 +106,10 @@ class Snake(GameObject):
         """Переместить голову на клетку и при необходимости хвост."""
         x, y = self.get_head_position()
         dx, dy = self.direction
-        new_head = ((x + dx * GRID_SIZE) % SCREEN_WIDTH,
-                    (y + dy * GRID_SIZE) % SCREEN_HEIGHT)
+        new_head = (
+            (x + dx * GRID_SIZE) % SCREEN_WIDTH,
+            (y + dy * GRID_SIZE) % SCREEN_HEIGHT,
+        )
         self.positions.insert(0, new_head)
         self.last = None
         if len(self.positions) > self.length:
@@ -147,7 +153,8 @@ def handle_keys(game_object):
         }
         direction = directions.get(event.key)
         if direction is not None and direction[0] != game_object.direction:
-            if direction[0] != tuple(-axis for axis in game_object.direction):
+            reverse = tuple(-axis for axis in game_object.direction)
+            if direction[0] != reverse:
                 game_object.next_direction = direction[0]
 
 
